@@ -5,7 +5,9 @@ import ro.teamnet.zth.api.annotations.Column;
 import ro.teamnet.zth.appl.domain.Department;
 import ro.teamnet.zth.appl.domain.Location;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
@@ -47,8 +49,8 @@ public class EntityManagerImplTest {
         EntityManagerImpl entity = new EntityManagerImpl();
         Department location = new Department();
         location.setDepartmentName("fraierii");
-        location.setLocation(new Long(1100));
-        location.setId(new Long(1234));
+        location.setLocation(1100L);
+        location.setId(1234L);
         location = (Department) entity.insert(location);
         assertNotNull(location);
     }
@@ -56,7 +58,42 @@ public class EntityManagerImplTest {
     @Test
     public void testFindAllMethod() {
         EntityManagerImpl entity = new EntityManagerImpl();
-        List<Department> result= entity.findAll(Department.class);
+        List<Department> result = entity.findAll(Department.class);
         assertNotEquals(result.size(), 0);
+    }
+
+    @Test
+    public void testUpdateMethod() {
+        EntityManagerImpl entity = new EntityManagerImpl();
+        Department department = entity.findById(Department.class, 0L);
+        department.setDepartmentName("ce cacat");
+        department.setLocation(1600L);
+        department = entity.update(department);
+        assertNull(department);
+        department = entity.findById(Department.class, 271L);
+        department.setLocation(1200L);
+        department.setDepartmentName("better??");
+        department = entity.update(department);
+        assertNotNull(department);
+    }
+
+    @Test
+    public void testDeleteMethod() {
+        EntityManagerImpl entity = new EntityManagerImpl();
+        Department department = entity.findById(Department.class, 271L);
+        entity.delete(department);
+    }
+
+    @Test
+    public void testFindByParamsMethod() {
+        EntityManagerImpl entity = new EntityManagerImpl();
+        Map<String, Object> params = new HashMap<>();
+        params.put("location_id", 1300L);
+        List<Department> departments = entity.findByParams(Department.class, params);
+        assertEquals(departments.size(), 0);
+        params.clear();
+        params.put("location_id", 1700L);
+        departments = entity.findByParams(Department.class, params);
+        assertNotEquals(departments.size(), 0);
     }
 }

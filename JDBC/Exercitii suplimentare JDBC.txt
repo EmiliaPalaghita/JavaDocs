@@ -1,4 +1,6 @@
-1. Search all the employees from a department by the department name. The searching method will accept as parameter a String which will be part of the name of the department. (The department name should contain this string).
+1. Search all the employees from a department by the department name. 
+The searching method will accept as parameter a String which will be part of the name of the department. 
+(The department name should contain this string).
 
 E.g.:
 You have the departments: Administration and Construction.
